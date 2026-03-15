@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DesignxCode — Complete Walkthrough</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Google Sans','Google Sans Text',system-ui,sans-serif;color:#0a0d14;background:#fff;line-height:1.7;font-size:15px;max-width:800px;margin:0 auto;padding:48px 40px}
+h1{font-size:32px;font-weight:700;margin-bottom:8px;letter-spacing:-.02em;color:#d51e8c}
+h2{font-size:22px;font-weight:700;margin-top:40px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:600;margin-top:28px;margin-bottom:10px}
+p{margin-bottom:14px}
+code{font-family:'JetBrains Mono',monospace;font-size:13px;background:#f3f6fa;padding:2px 6px;border-radius:4px}
+pre{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:#f3f6fa;padding:16px 20px;border-radius:10px;margin:14px 0;overflow-x:auto;line-height:1.6;border:1px solid #e5e7eb}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th{text-align:left;padding:10px 14px;background:#f3f6fa;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#6b7280;border-bottom:2px solid #e5e7eb}
+td{padding:10px 14px;border-bottom:1px solid #f3f6fa;vertical-align:top}
+tr:hover td{background:#fafbfc}
+blockquote{border-left:3px solid #d51e8c;padding:12px 20px;margin:14px 0;background:#fafbfc;border-radius:0 8px 8px 0;font-style:italic;color:#6b7280}
+ul,ol{margin:10px 0 14px 24px}
+li{margin-bottom:6px}
+strong{font-weight:600}
+hr{border:none;border-top:1px solid #e5e7eb;margin:32px 0}
+.subtitle{font-size:18px;color:#6b7280;margin-bottom:32px;font-weight:400}
+.badge{display:inline-block;background:rgba(213,30,140,.06);color:#d51e8c;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;margin-right:4px}
+.warn{background:#fef3c7;border:1px solid #f59e0b;padding:12px 16px;border-radius:8px;margin:14px 0;font-size:14px}
+@media print{body{padding:20px;font-size:13px}h1{font-size:26px}h2{font-size:18px;margin-top:28px}pre{font-size:11px;padding:10px}table{font-size:12px}}
+</style>
+</head>
+<body>
+
+<h1>DesignxCode</h1>
+<div class="subtitle">Complete Walkthrough — Everything you need to know</div>
+
+<h2>What is DesignxCode?</h2>
+<p>DesignxCode is a tool that connects your <strong>Figma designs</strong> to your <strong>code</strong>. It reads your design system from Figma (colors, fonts, shadows, components) and turns it into actual working code — automatically.</p>
+<p>Think of it like this:</p>
+<ul>
+<li>You design a Button in Figma with specific colors, sizes, and states</li>
+<li>DesignxCode reads that Button, understands all its variants, and writes the React code for you</li>
+<li>If someone changes the design in Figma, DesignxCode detects the drift and can re-sync</li>
+</ul>
+<p><strong>The problem it solves:</strong> Designers design in Figma. Developers code in VS Code. These two worlds drift apart over time. Colors change, fonts get updated, new components get added — but the code doesn't know. DesignxCode bridges this gap.</p>
+
+<h2>How It Works</h2>
+<pre>Figma (your designs)
+    ↓
+DesignxCode MCP Server (the engine)
+    ↓
+Your Code (React components, CSS tokens, theme configs)</pre>
+
+<p>The MCP server has <strong>12 tools</strong> that each do one job:</p>
+
+<table>
+<tr><th>Tool</th><th>What it does</th><th>When to use</th></tr>
+<tr><td><code>get_design_context</code></td><td>Loads your full design system</td><td>Before writing any UI code</td></tr>
+<tr><td><code>extract_tokens</code></td><td>Pulls all design tokens</td><td>When you need token values</td></tr>
+<tr><td><code>extract_styles</code></td><td>Gets typography and effects</td><td>When checking font scales</td></tr>
+<tr><td><code>generate_coded_components</code></td><td>Writes React components from Figma</td><td>When you need a new component</td></tr>
+<tr><td><code>generate_theme_config</code></td><td>Creates light/dark theme CSS</td><td>When setting up themes</td></tr>
+<tr><td><code>sync_tokens_to_code</code></td><td>Generates CSS/SCSS/Tailwind files</td><td>When syncing tokens</td></tr>
+<tr><td><code>audit_component_parity</code></td><td>Compares Figma vs code</td><td>When checking coverage</td></tr>
+<tr><td><code>audit_system_health</code></td><td>Health score for your design system</td><td>Weekly health checks</td></tr>
+<tr><td><code>detect_unused_tokens</code></td><td>Finds unused tokens in codebase</td><td>When cleaning up</td></tr>
+<tr><td><code>export_assets</code></td><td>Exports SVG/PNG from Figma</td><td>When you need icons</td></tr>
+<tr><td><code>generate_sync_pr</code></td><td>Creates a GitHub PR</td><td>When pushing changes</td></tr>
+<tr><td><code>set_design_rules</code></td><td>Saves custom rules</td><td>When adding constraints</td></tr>
+</table>
+
+<h2>Setup (Step by Step)</h2>
+
+<h3>Step 1: Get your Figma token</h3>
+<ol>
+<li>Go to figma.com → click your profile → <strong>Settings</strong></li>
+<li>Scroll to <strong>Personal access tokens</strong></li>
+<li>Click <strong>Generate new token</strong> → name it "designxcode"</li>
+<li>Copy the token (starts with <code>figd_</code>)</li>
+</ol>
+
+<h3>Step 2: Get the code</h3>
+<pre>git clone https://github.com/thevoiduniverse/designxcode-workspace.git
+cd designxcode-workspace/designxcode-mcp
+npm install
+npm run build</pre>
+
+<h3>Step 3: Add your Figma token</h3>
+<p>Create a file called <code>.env</code> in the <code>designxcode-mcp</code> folder:</p>
+<pre>FIGMA_ACCESS_TOKEN=figd_your_token_here</pre>
+<p>Optional — for GitHub features:</p>
+<pre>FIGMA_ACCESS_TOKEN=figd_your_token_here
+GITHUB_TOKEN=ghp_your_github_token_here</pre>
+
+<h3>Step 4: Connect to Claude Code</h3>
+<p>Add to your Claude Code MCP config:</p>
+<pre>{
+  "mcpServers": {
+    "designxcode-mcp": {
+      "command": "node",
+      "args": ["/path/to/designxcode-mcp/dist/index.js"]
+    }
+  }
+}</pre>
+
+<h3>Step 5: Verify</h3>
+<p>In Claude Code, type <code>/mcp</code>. You should see <code>designxcode-mcp</code> listed.</p>
+
+<h3>Step 6: Get your Figma file key</h3>
+<p>From your Figma URL:</p>
+<pre>https://www.figma.com/design/uXQvmtNAQukeywIMiieDdy/My-Design
+                              ^^^^^^^^^^^^^^^^^^^^^^^^
+                              This is your file key</pre>
+
+<h2>Common Workflows</h2>
+
+<h3>"I want to generate a Button component"</h3>
+<blockquote>Ask Claude: "Generate the Button component from my Figma file as React + Tailwind"</blockquote>
+<p>You'll get a complete <code>.tsx</code> file with all variants, style maps, and TypeScript types. All values come directly from Figma.</p>
+
+<h3>"I want light and dark theme CSS"</h3>
+<blockquote>Ask Claude: "Generate theme config from my Figma file"</blockquote>
+<p>Works even without Figma Enterprise — uses a technique called <strong>mode inference</strong> that detects light/dark themes from the file tree automatically.</p>
+
+<h3>"I want to check if my code matches Figma"</h3>
+<blockquote>Ask Claude: "Audit component parity for my Figma file against my GitHub repo"</blockquote>
+<p>Shows matched, missing, and extra components with coverage percentage.</p>
+
+<h2>Problems That Aren't Solved Yet</h2>
+<p>Great places to start contributing:</p>
+
+<h3>1. Property Removal Detection <span class="badge">Medium</span></h3>
+<p>When a Figma variant removes a property (Ghost button has no background), the differ doesn't catch it. The old value stays in generated code.</p>
+<p><strong>File:</strong> <code>src/utils/state-differ.ts</code> — <code>diffStyles</code> function</p>
+
+<h3>2. Redundant Padding <span class="badge">Easy</span></h3>
+<p>Parser outputs both <code>padding: "12px 24px"</code> AND individual padding values. Creates duplicate Tailwind classes.</p>
+<p><strong>File:</strong> <code>src/utils/node-parser.ts</code></p>
+
+<h3>3. Child Node State Bloat <span class="badge">Medium</span></h3>
+<p>Child elements get duplicate hover/active/disabled classes from scoped state overrides.</p>
+<p><strong>File:</strong> <code>src/utils/emitter-react-tailwind.ts</code></p>
+
+<h3>4. Token Naming Without Enterprise <span class="badge">Hard</span></h3>
+<p>Without Figma Enterprise, token names come from node names (ugly). Needs better heuristics or style cross-referencing.</p>
+<p><strong>File:</strong> <code>src/utils/mode-inference.ts</code></p>
+
+<h3>5. Multi-Axis Variant Differ <span class="badge">Hard</span></h3>
+<p>Components with 3+ axes (Size × Type × State) get cross-contaminated diffs.</p>
+<p><strong>File:</strong> <code>src/utils/state-differ.ts</code></p>
+
+<h3>6. Build the Mac App <span class="badge">Project</span></h3>
+<p>HTML mockup exists, needs to become a real Tauri + React app wired to the MCP server.</p>
+<p><strong>Spec:</strong> <code>docs/app-screens-spec.md</code> (70 frames, 9 pages)</p>
+
+<h3>7. Add Tests <span class="badge">Easy</span></h3>
+<p>Zero automated tests. Add Vitest and write unit tests for the core utilities.</p>
+
+<h2>How to Build a Portfolio Piece</h2>
+
+<h3>Option A: Fix a Bug</h3>
+<ol>
+<li>Pick problem #2 (redundant padding — easiest)</li>
+<li>Read the code, understand the bug</li>
+<li>Write a failing test → fix it → write a blog post</li>
+<li>Push to GitHub, link the PR</li>
+</ol>
+
+<h3>Option B: Build the Mac App</h3>
+<ol>
+<li>Read the screen spec</li>
+<li>Scaffold Tauri + React</li>
+<li>Build one page at a time</li>
+<li>Wire to MCP server</li>
+</ol>
+
+<h3>Option C: Add a New Tool</h3>
+<p>Ideas: accessibility checker, animation tokens, icon library manager. Follow the pattern in <code>src/tools/</code>.</p>
+
+<h2>Key Concepts</h2>
+
+<p><strong>MCP:</strong> Model Context Protocol — lets AI tools talk to external services. DesignxCode is an MCP server that Claude connects to.</p>
+
+<p><strong>Design tokens:</strong> The atomic values — colors (#d51e8c), font sizes (16px), shadows. Building blocks.</p>
+
+<p><strong>Mode inference:</strong> Our technique for detecting light/dark themes without Enterprise. Walks the file tree, finds variables resolving to different colors, clusters by luminance. Nobody else does this.</p>
+
+<p><strong>Style maps:</strong> Clean lookup tables instead of messy inline classes:</p>
+<pre>const typeStyles = {
+  primary: { base: "bg-[#d51e8c]", hover: "hover:bg-[#b8187a]" },
+  ghost: { base: "text-[#6b7280]", hover: "hover:bg-[#f3f6fa]" },
+};</pre>
+
+<hr>
+<p style="font-size:12px;color:#6b7280;text-align:center;margin-top:32px">DesignxCode — github.com/thevoiduniverse/designxcode-workspace</p>
+
+</body>
+</html>

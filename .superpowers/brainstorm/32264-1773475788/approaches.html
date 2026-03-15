@@ -1,0 +1,84 @@
+<h2>Three Approaches: Design System Context Layer</h2>
+<p class="subtitle">How should the MCP server deliver persistent design system context to the AI?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Single Mega-Resource</h3>
+      <p>One <code>designsystem://context/{fileKey}</code> resource that returns everything — tokens, components, patterns, rules — in a single structured document. The AI reads it once and has the full picture.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Simple to implement — one resource, one fetch</li>
+            <li>AI gets complete context in one read</li>
+            <li>Easy to reason about — no coordination needed</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Could be very large (10k+ tokens for big design systems)</li>
+            <li>All-or-nothing — can't fetch just colors if that's all you need</li>
+            <li>Every read hits Figma API (slow, rate limits)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Layered Resources + Cache</h3>
+      <p>Multiple resources at different granularity — <code>designsystem://tokens/{fileKey}</code>, <code>designsystem://components/{fileKey}</code>, <code>designsystem://patterns/{fileKey}</code>, <code>designsystem://rules/{fileKey}</code>. An in-memory cache avoids repeated Figma API calls. A <code>build_design_context</code> tool pre-warms the cache and returns a compact summary.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>AI can read only what it needs per task</li>
+            <li>Cache makes repeated reads instant</li>
+            <li>Smart detection tool can decide which resources to read</li>
+            <li>Each resource stays within reasonable context size</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>More complex — multiple resources to coordinate</li>
+            <li>Cache invalidation needs thought (TTL? manual refresh?)</li>
+            <li>AI must know which resources to read and when</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Smart Tool + Prompt Combo</h3>
+      <p>A <code>get_design_context</code> tool that the AI calls before generating UI code. It fetches tokens + components + patterns, applies intelligent compression (only relevant tokens for the task), and returns a tailored context block. Paired with an MCP prompt template <code>use-design-system</code> that the user can invoke.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Context is task-aware — returns only relevant tokens/components</li>
+            <li>Prompt template gives users a one-command trigger</li>
+            <li>Tool can cache internally + compress intelligently</li>
+            <li>Works naturally with "smart detection" — AI decides when to call</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Relies on the AI deciding to call the tool (may forget)</li>
+            <li>More logic in the compression/relevance filtering</li>
+            <li>Prompt templates have limited client support currently</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

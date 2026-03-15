@@ -1,0 +1,17 @@
+{
+  "v": 5,
+  "entries": {
+    "components-button--default": {
+      "id": "components-button--default",
+      "title": "Components/Button",
+      "name": "Default",
+      "importPath": "./src/components/Button/Button.stories.tsx"
+    },
+    "components-buttonwithicon--default": {
+      "id": "components-buttonwithicon--default",
+      "title": "Components/ButtonWithIcon",
+      "name": "Default",
+      "importPath": "./src/components/ButtonWithIcon/ButtonWithIcon.stories.tsx"
+    }
+  }
+}

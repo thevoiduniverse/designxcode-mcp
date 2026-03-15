@@ -1,0 +1,53 @@
+{
+  "name": "designxcode-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server that keeps Figma design systems and code in sync — auditing token drift, component parity, and generating sync PRs",
+  "type": "module",
+  "main": "dist/index.js",
+  "author": "DesignxCode",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/designxcode/designxcode-mcp.git"
+  },
+  "homepage": "https://github.com/designxcode/designxcode-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/designxcode/designxcode-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "figma",
+    "design-tokens",
+    "design-system",
+    "sync",
+    "style-dictionary",
+    "component-parity"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "@octokit/rest": "^21.1.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

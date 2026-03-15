@@ -1,0 +1,51 @@
+<evaluation>
+  <qa_pair>
+    <question>Extract all design tokens from the Figma file and report how many total tokens were found. What is the total count?</question>
+    <answer>Use extract_tokens with the figma_file_key. The answer is the stats.total value from the response.</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Extract tokens in W3C format and then in raw format. How many variable collections exist in the Figma file?</question>
+    <answer>Use extract_tokens with output_format "raw". Count the collections array length in the response.</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Generate CSS and SCSS token files from the Figma file. How many files were generated in total?</question>
+    <answer>2 (one CSS file and one SCSS file)</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Extract tokens filtered to only the "Colors" collection. What percentage of total tokens are color tokens?</question>
+    <answer>Use extract_tokens with collection_names: ["Colors"]. Calculate from stats.byType.color / stats.total * 100.</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Generate token files for all 6 platforms (css, scss, tailwind, swift, kotlin, json). Which platform produces the largest output file by content length?</question>
+    <answer>Use sync_tokens_to_code with all 6 platforms. Compare content lengths in the response.</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Run an audit_component_parity check between the Figma file and the GitHub repo using the Storybook manifest. What is the coverage percentage?</question>
+    <answer>Use audit_component_parity with storybook_manifest_path. The answer is summary.coveragePercent.</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Run audit_system_health for the design system. What is the overall sync score (0-100)?</question>
+    <answer>Use audit_system_health with both token_file_path and storybook_manifest_path. The answer is the score field.</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Use generate_sync_pr with dry_run: true to preview a token sync PR. How many files would be updated?</question>
+    <answer>First use sync_tokens_to_code to get files, then pass them to generate_sync_pr with dry_run: true. Count the files array.</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Extract tokens and check if there are any multi-mode collections (e.g. light/dark themes). How many distinct token sets are produced for multi-mode collections?</question>
+    <answer>Use extract_tokens. Count the keys in tokenSets that contain "/" (indicating mode splits like "colors/light", "colors/dark").</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Run a full workflow: extract tokens, generate CSS files, preview a PR. What would the PR branch name pattern be?</question>
+    <answer>designxcode/sync-tokens-{timestamp} (the branch name starts with "designxcode/sync-tokens-" followed by a Unix timestamp)</answer>
+  </qa_pair>
+</evaluation>

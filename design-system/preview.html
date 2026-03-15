@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Button Component Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;700&display=swap" />
+  <style>
+    body { font-family: 'Google Sans', 'Google Sans Text', system-ui, sans-serif; margin: 0; transition: background 0.3s, color 0.3s; }
+    .section-title { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+
+    /* Theme variables — all values from Figma via generate_theme_config mode inference.
+       bg-page uses the dominant background color detected in each mode.
+       No values are invented — if something looks wrong, fix it in Figma. */
+    :root, [data-theme="light"] {
+      --bg-page: #fafbfc;
+      --text-primary: #0a0d14;
+      --text-muted: #6b7280;
+      --text-on-primary: #fafbfc;
+      --border: #e5e7eb;
+      --primary: #d51e8c;
+      --primary-hover: #b8187a;
+      --ghost-hover-bg: #f3f6fa;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #0a0d14;
+      --text-primary: #fafbfc;
+      --text-muted: #afb8c1;
+      --text-on-primary: #fafbfc;
+      --border: #1e1e1e;
+      --primary: #e04e9b;
+      --primary-hover: #f06ab4;
+      --ghost-hover-bg: #1a1a1a;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { forwardRef, useState } = React;
+
+    // ─── Theme-aware Button using CSS variables ───
+
+    const typeStyles = {
+      primary: {
+        base: "bg-[var(--primary)] text-[var(--text-on-primary)] shadow-[none]",
+        hover: "hover:bg-[var(--primary-hover)]",
+        active: "active:bg-[var(--primary)]",
+        focus: "focus-visible:ring-2 focus-visible:ring-[var(--primary)]/50 focus-visible:ring-offset-2",
+        disabled: "disabled:opacity-25",
+      },
+      outline: {
+        base: "border border-[var(--border)] text-[var(--text-primary)] bg-transparent",
+        hover: "hover:bg-[var(--ghost-hover-bg)]",
+        active: "active:bg-[var(--border)]",
+        focus: "focus-visible:ring-2 focus-visible:ring-[var(--border)] focus-visible:ring-offset-2",
+        disabled: "disabled:opacity-25",
+      },
+      ghost: {
+        base: "text-[var(--text-muted)] bg-transparent",
+        hover: "hover:bg-[var(--ghost-hover-bg)] hover:text-[var(--text-primary)]",
+        active: "active:bg-[var(--border)] active:text-[var(--text-primary)]",
+        focus: "focus-visible:ring-2 focus-visible:ring-[var(--text-muted)]/50 focus-visible:ring-offset-2",
+        disabled: "disabled:opacity-25",
+      },
+    };
+
+    const sizeStyles = {
+      md: "px-6 py-3 text-base",
+      sm: "px-4 py-2 text-sm",
+    };
+
+    const Button = forwardRef(({ variant = "primary", size = "md", className = "", children, ...props }, ref) => {
+      const styles = typeStyles[variant];
+      return (
+        <button
+          ref={ref}
+          className={[
+            "inline-flex items-center justify-center font-medium rounded-full transition-colors",
+            "focus:outline-none disabled:pointer-events-none",
+            sizeStyles[size],
+            styles.base, styles.hover, styles.active, styles.focus, styles.disabled,
+            className,
+          ].filter(Boolean).join(" ")}
+          {...props}
+        >
+          {children}
+        </button>
+      );
+    });
+
+    // ─── Button with Icon ───
+
+    const iconSizeStyles = {
+      md: { button: "px-6 py-3 gap-3 text-[16px] leading-[1.63]", icon: "w-4 h-4" },
+      sm: { button: "px-4 py-2 gap-2 text-[14px] leading-[1.57]", icon: "w-4 h-4" },
+    };
+
+    const ButtonWithIcon = forwardRef(({ size = "md", icon, className = "", children, ...props }, ref) => {
+      const styles = iconSizeStyles[size];
+      return (
+        <button
+          ref={ref}
+          className={[
+            "inline-flex flex-row items-center justify-center font-[500] rounded-full",
+            "text-[var(--text-primary)] border border-[var(--border)] bg-transparent",
+            "transition-colors hover:bg-[var(--ghost-hover-bg)] active:bg-[var(--border)]",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border)] focus-visible:ring-offset-2",
+            "disabled:opacity-25 disabled:pointer-events-none",
+            styles.button,
+            className,
+          ].filter(Boolean).join(" ")}
+          {...props}
+        >
+          {icon && <span className={`flex-shrink-0 ${styles.icon}`}>{icon}</span>}
+          {children}
+        </button>
+      );
+    });
+
+    const GitHubIcon = () => (
+      <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" />
+      </svg>
+    );
+
+    // ─── Theme Toggle ───
+
+    function ThemeToggle({ theme, onToggle }) {
+      return (
+        <button
+          onClick={onToggle}
+          style={{
+            background: theme === "dark" ? "#fafbfc" : "#0a0d14",
+            color: theme === "dark" ? "#0a0d14" : "#fafbfc",
+            border: "none",
+            borderRadius: 20,
+            padding: "8px 16px",
+            fontSize: 13,
+            fontWeight: 500,
+            cursor: "pointer",
+            transition: "all 0.3s",
+          }}
+        >
+          {theme === "dark" ? "Light Mode" : "Dark Mode"}
+        </button>
+      );
+    }
+
+    // ─── App ───
+
+    function App() {
+      const [label, setLabel] = useState("Button");
+      const [theme, setTheme] = useState("light");
+
+      React.useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        document.body.style.background = "var(--bg-page)";
+      }, [theme]);
+
+      const cardStyle = {
+        background: "var(--bg-page)",
+        borderRadius: 12,
+        padding: 32,
+        boxShadow: "none",
+        marginBottom: 24,
+      };
+
+      return (
+        <div style={{ maxWidth: 800, margin: "40px auto", padding: "0 24px" }}>
+          {/* Header with theme toggle */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: "var(--text-primary)" }}>
+              Button Component Preview
+            </h1>
+            <ThemeToggle theme={theme} onToggle={() => setTheme(t => t === "light" ? "dark" : "light")} />
+          </div>
+          <p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 32 }}>
+            Theme-aware components using CSS variables. Toggle dark mode to verify.
+            Theme tokens inferred from Figma via <code style={{ color: "var(--primary)" }}>generate_theme_config</code> mode inference.
+          </p>
+
+          {/* Editable Label */}
+          <div style={{ ...cardStyle }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: "var(--text-muted)", display: "block", marginBottom: 8 }}>
+              BUTTON LABEL
+            </label>
+            <input
+              type="text"
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+              style={{
+                width: "100%", padding: "8px 12px",
+                border: `1px solid var(--border)`,
+                borderRadius: 8, fontSize: 14, outline: "none",
+                background: "var(--bg-page)", color: "var(--text-primary)",
+              }}
+              placeholder="Type to change button text..."
+            />
+          </div>
+
+          {/* Variant Matrix */}
+          <div style={cardStyle}>
+            <div className="section-title">All Variants</div>
+            <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 16px" }}>
+              <thead>
+                <tr style={{ textAlign: "left", fontSize: 12, color: "var(--text-muted)" }}>
+                  <th style={{ width: 80, paddingBottom: 8 }}>Variant</th>
+                  <th style={{ paddingBottom: 8 }}>Default (md)</th>
+                  <th style={{ paddingBottom: 8 }}>Default (sm)</th>
+                  <th style={{ paddingBottom: 8 }}>Disabled (md)</th>
+                  <th style={{ paddingBottom: 8 }}>Disabled (sm)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {["primary", "outline", "ghost"].map((v) => (
+                  <tr key={v}>
+                    <td style={{ fontSize: 13, fontWeight: 500, color: "var(--text-primary)", textTransform: "capitalize" }}>{v}</td>
+                    <td><Button variant={v} size="md">{label}</Button></td>
+                    <td><Button variant={v} size="sm">{label}</Button></td>
+                    <td><Button variant={v} size="md" disabled>{label}</Button></td>
+                    <td><Button variant={v} size="sm" disabled>{label}</Button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Interactive States */}
+          <div style={cardStyle}>
+            <div className="section-title">Interactive States (hover, click, tab-focus to test)</div>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Button variant="primary">{label}</Button>
+              <Button variant="outline">{label}</Button>
+              <Button variant="ghost">{label}</Button>
+              <Button variant="primary" size="sm">{label}</Button>
+              <Button variant="outline" size="sm">{label}</Button>
+              <Button variant="ghost" size="sm">{label}</Button>
+            </div>
+          </div>
+
+          {/* Button with Icon */}
+          <div style={cardStyle}>
+            <div className="section-title">Button with Icon</div>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "center" }}>
+              <ButtonWithIcon size="md" icon={<GitHubIcon />}>{label || "View on GitHub"}</ButtonWithIcon>
+              <ButtonWithIcon size="sm" icon={<GitHubIcon />}>{label || "View on GitHub"}</ButtonWithIcon>
+              <ButtonWithIcon size="md" icon={<GitHubIcon />} disabled>{label || "View on GitHub"}</ButtonWithIcon>
+            </div>
+          </div>
+
+          {/* Theme Info */}
+          <div style={{ marginTop: 24, padding: 16, background: "var(--bg-page)", borderRadius: 8, fontSize: 13, color: "var(--text-muted)", boxShadow: "none" }}>
+            Current theme: <strong style={{ color: "var(--primary)" }}>{theme}</strong> &mdash;
+            Compare with: <a href="https://www.figma.com/design/uXQvmtNAQukeywIMiieDdy?node-id=2003:155" target="_blank" style={{ color: "var(--primary)", textDecoration: "underline" }}>Open Button in Figma</a>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
