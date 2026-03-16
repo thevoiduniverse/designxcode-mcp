@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/thevoiduniverse/designxcode-mcp/main/assets/logo.png" alt="DesignxCode" width="120" />
+  <img src="https://raw.githubusercontent.com/thevoiduniverse/designxcode-mcp/main/assets/logo.png" alt="DesignxCode" width="320" />
   <h1>DesignxCode MCP</h1>
   <p><strong>Keep your Figma design system and codebase perfectly in sync.</strong></p>
   <p>An MCP server for Claude that extracts tokens, audits drift, generates code, and creates PRs - no manual work required.</p>
