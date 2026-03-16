@@ -1,6 +1,6 @@
 {
   "name": "designxcode-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server that keeps Figma design systems and code in sync — auditing token drift, component parity, and generating sync PRs",
   "type": "module",
   "main": "dist/index.js",
@@ -8,11 +8,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/designxcode/designxcode-mcp.git"
+    "url": "git+https://github.com/thevoiduniverse/designxcode-mcp.git"
   },
-  "homepage": "https://github.com/designxcode/designxcode-mcp#readme",
+  "homepage": "https://github.com/thevoiduniverse/designxcode-mcp#readme",
   "bugs": {
-    "url": "https://github.com/designxcode/designxcode-mcp/issues"
+    "url": "https://github.com/thevoiduniverse/designxcode-mcp/issues"
   },
   "keywords": [
     "mcp",
