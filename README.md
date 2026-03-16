@@ -1,4 +1,6 @@
 <div align="center">
+  <img src="https://raw.githubusercontent.com/thevoiduniverse/designxcode-mcp/main/assets/icon.png" alt="DesignxCode" width="80" />
+  <br />
   <img src="https://raw.githubusercontent.com/thevoiduniverse/designxcode-mcp/main/assets/logo.png" alt="DesignxCode" width="320" />
   <h1>DesignxCode MCP</h1>
   <p><strong>Keep your Figma design system and codebase perfectly in sync.</strong></p>
