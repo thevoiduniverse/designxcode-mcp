@@ -4,6 +4,9 @@
   "description": "MCP server that keeps Figma design systems and code in sync — auditing token drift, component parity, and generating sync PRs",
   "type": "module",
   "main": "dist/index.js",
+  "bin": {
+    "designxcode-mcp-server": "dist/index.js"
+  },
   "author": "DesignxCode",
   "license": "MIT",
   "repository": {
